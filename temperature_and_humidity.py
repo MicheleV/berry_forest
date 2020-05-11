@@ -14,6 +14,7 @@ def long_string(display, text = '', num_line = 1, num_cols = 16):
 	"""
 	if(len(text) > num_cols):
 		display.lcd_display_string(text[:num_cols],num_line)
+                # TODO: use threading
 		time.sleep(1)
 		for i in range(len(text) - num_cols + 1):
 			text_to_print = text[i:i+num_cols]

@@ -13,6 +13,7 @@ def message_to_screen():
     try:
             display.lcd_display_string("Hello world!", 1)
             display.lcd_display_string("Line 2 :)", 2)
+            # TODO: use threading
             time.sleep(2)
             display.lcd_clear()
             display.lcd_display_string("New line 1", 1)

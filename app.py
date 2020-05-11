@@ -11,8 +11,10 @@ import lcd
 
 import lcddriver
 import time
+from pomodoro import pomodoro
 
 import sys
+from threading import Thread
 import Adafruit_DHT
 
 # Temperature and humidity sensor type
@@ -66,6 +68,31 @@ def temperature():
 
     lcd.long_string(message, 1)
     return 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temperature, humidity)
+
+# HACK: we're using a global variable!
+# NOTE: Initialize timer so that '/status/ route won't throw errors
+timer = Thread()
+
+@route('/pomodoro')
+def pomodoro_route():
+    global timer
+    print('inside pomodoro')
+    if (timer.is_alive()):
+        print('One pomodoro at the time, please')
+        return 'BUSY'
+    else:
+        # TODO: get the length from post/get params
+        timer = Thread(target=pomodoro, args=("Multithreaded timer 1", 3))
+        timer.start()
+        return 'POMODORO'
+
+@route('/pomodoro/status')
+def pomodoro_route():
+    global timer
+    print(timer.is_alive())
+    print('inside status')
+    return str(timer.is_alive())
+
 
 @route('/<filename>')
 def server_static(filename):

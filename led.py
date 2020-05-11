@@ -11,6 +11,7 @@ def light_led(led):
         GPIO.setup(led, GPIO.OUT)
         GPIO.output(led, GPIO.HIGH)
 
+        # TODO: use threading
         time.sleep(1)
 
         GPIO.output(led, GPIO.LOW)
