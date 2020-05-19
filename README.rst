@@ -1,5 +1,5 @@
 *********
-Berry junk
+Berry forest
 *********
 
 |License|
@@ -26,7 +26,7 @@ THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR I
 Author
 =======
 
-Berry junk was created by `Michele Valsecchi <https://github.com/MicheleV>`_
+Berry forest was created by `Michele Valsecchi <https://github.com/MicheleV>`_
 
 
 License

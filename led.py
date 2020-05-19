@@ -2,13 +2,19 @@
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
 import RPi.GPIO as GPIO
+import os
+from dotenv import load_dotenv
+
+from threading import Thread
 import time
 
-GREEN = 18
-RED = 17
+load_dotenv(verbose=True)
+
+GREEN = int(os.getenv("GREEN"))
+RED = int(os.getenv("RED"))
 
 
-def light_led(led, seconds=1):
+def _light_led(led, seconds=1):
     """
     Lights up a led for a given amount of time
     """
@@ -23,3 +29,9 @@ def light_led(led, seconds=1):
     GPIO.output(led, GPIO.LOW)
 
     GPIO.cleanup()
+
+
+# FIXME: this will throw an Exception if called too fast
+# TODO: implement a throttle mechanism... or fix the led driver to be async :)
+def light_led(led, seconds=1):
+    light = Thread(target=_light_led, args=(led, seconds)).start()

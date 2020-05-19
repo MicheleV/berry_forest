@@ -1,7 +1,10 @@
 Adafruit-DHT==1.4.0
 bottle==0.12.18
 colorzero==1.1
+dotenv==0.0.5
 gpiozero==1.5.1
 pkg-resources==0.0.0
+python-dotenv==0.10.3
 RPi.GPIO==0.7.0
 smbus==1.1.post2
+update==0.4.4

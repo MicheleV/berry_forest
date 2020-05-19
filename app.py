@@ -1,6 +1,7 @@
 # Copyright: (c) 2020, Michele Valsecchi <https://github.com/MicheleV>
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+import os
 import bottle
 from bottle import route, response, static_file, run
 import led
