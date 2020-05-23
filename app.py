@@ -1,34 +1,32 @@
 # Copyright: (c) 2020, Michele Valsecchi <https://github.com/MicheleV>
 # GNU General Public License v3.0+
 # (see COPYING or https://www.gnu.org/licenses/gpl-3.0.txt)
+import json
 import os
+import time
+
 import bottle
-from bottle import route, response, static_file, run
+from bottle import static_file
+from bottle import route
+from bottle import run
+from bottle import template
 import led
 import lcd
 import sys
-import time
+
 from temperature import get_external_temp
 from temperature import get_pi_temperature
-import json
-
+from utils import get_iface_ip
+from utils import enable_cors
 
 app = bottle.app()
 
 
-# Credits: https://stackoverflow.com/a/17262900
-def enable_cors(fn):
-    def _enable_cors(*args, **kwargs):
-        # set CORS headers
-        response.headers['Access-Control-Allow-Origin'] = '*'
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
+@route('/')
+def home():
+    print(get_iface_ip())
+    return template('templates/index.tpl', local_ip='192.168.11.11')
 
-        if bottle.request.method != 'OPTIONS':
-            # actual request; reply with the actual response
-            return fn(*args, **kwargs)
-
-    return _enable_cors
 
 # NOTE: this is a POC and all the operation below are syncronous!!!
 # Rewrite using threads https://bottlepy.org/docs/dev/async.html
@@ -60,9 +58,12 @@ def greetings():
 @enable_cors
 def temperature():
     hum, temp = get_external_temp()
-    message = 'Temp: {0:0.1f} C  Humidity: {1:0.1f} %'.format(temp, hum)
+    tmp_msg = 'Temp: {0:0.1f} C'.format(temp)
+    hum_msg = 'Humidity: {0:0.1f} %'.format(hum)
 
-    lcd.long_string(message, 1)
+    lcd.long_string(tmp_msg, num_line=1, clean_after=False, step=0, wait=0)
+    lcd.long_string(hum_msg, num_line=2, step=0, wait=3)
+
     return json.dumps({"result": {"temperature": temp, "humidity": hum}})
 
 
@@ -75,9 +76,9 @@ def temperature():
     return json.dumps({"result": message})
 
 
-@route('/<filename>')
-def server_static(filename):
-    return static_file(filename, root='./templates')
+# @route('/<filename>')
+# def server_static(filename):
+#     return static_file(filename, root='./templates')
 
 
 run(host='0.0.0.0', port=8080, debug=True)

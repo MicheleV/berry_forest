@@ -5,8 +5,7 @@
 <body>
 
   <script type="text/javascript">
-    // TODO: remove this hardcoded value
-    const url = 'http://192.168.11.11:8080/'
+    const url = 'http://{{local_ip}}:8080/'
 
     function api_led(route){
       fetch(url + route)
