@@ -6,6 +6,7 @@ import os
 from dotenv import load_dotenv
 
 from threading import Thread
+from threading import Lock
 import time
 
 load_dotenv(verbose=True)
@@ -13,25 +14,29 @@ load_dotenv(verbose=True)
 GREEN = int(os.getenv("GREEN"))
 RED = int(os.getenv("RED"))
 
+lock = Lock()
+
 
 def _light_led(led, seconds=1):
     """
     Lights up a led for a given amount of time
     """
-    GPIO.setwarnings(True)
-    GPIO.setmode(GPIO.BCM)
+    lock.acquire()
+    try:
+        GPIO.setwarnings(True)
+        GPIO.setmode(GPIO.BCM)
 
-    GPIO.setup(led, GPIO.OUT)
-    GPIO.output(led, GPIO.HIGH)
+        GPIO.setup(led, GPIO.OUT)
+        GPIO.output(led, GPIO.HIGH)
 
-    time.sleep(seconds)
+        time.sleep(seconds)
 
-    GPIO.output(led, GPIO.LOW)
+        GPIO.output(led, GPIO.LOW)
 
-    GPIO.cleanup()
+        GPIO.cleanup()
+    finally:
+        lock.release()
 
 
-# FIXME: this will throw an Exception if called too fast
-# TODO: implement a throttle mechanism... or fix the led driver to be async :)
 def light_led(led, seconds=1):
     light = Thread(target=_light_led, args=(led, seconds)).start()
