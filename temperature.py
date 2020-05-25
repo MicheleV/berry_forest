@@ -15,6 +15,7 @@ DHT_TYPE = int(os.getenv("DHT_TYPE"))
 DHT_SENSOR_PIN = int(os.getenv("DHT_SENSOR_PIN"))
 
 
+# TODO: use thread, at the moment these functions are synchronous
 def get_external_temp():
     humidity, temperature = Adafruit_DHT.read_retry(DHT_TYPE, DHT_SENSOR_PIN)
     return humidity, temperature
