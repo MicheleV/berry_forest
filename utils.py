@@ -1,21 +1,5 @@
-import netifaces
 from bottle import response
 from bottle import request
-
-
-# Credits https://stackoverflow.com/a/11736402
-def get_iface_ip():
-    """
-    Return the FIRST interface (other than lo) hat has an IP
-    """
-    interfaces = netifaces.interfaces()
-    for i in interfaces:
-        if i == 'lo':
-            continue
-        iface = netifaces.ifaddresses(i).get(netifaces.AF_INET)
-        if iface is not None:
-            for j in iface:
-                return j['addr']
 
 
 # Credits: https://stackoverflow.com/a/17262900

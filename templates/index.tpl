@@ -5,22 +5,27 @@
 <body>
 
   <script type="text/javascript">
-    const url = 'http://{{local_ip}}:8080/'
 
     function api_led(route){
-      fetch(url + route)
-        .then(response => response.json())
+      fetch(route)
+        .then((response) => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            return {'status' : 'The server does not look happy'}
+          }
+        })
         .then(data => console.log(data));
     }
   </script>
 
-  <button type="button" id="yes" onclick="api_led('green')">Green</button>
+  <button type="button" id="yes" onclick="api_led('/green')">Green</button>
   <hr>
-  <button type="button" id="no" onclick="api_led('red')">Red</button>
+  <button type="button" id="no" onclick="api_led('/red')">Red</button>
   <hr>
-  <button type="button" id="no" onclick="api_led('greetings')">Greeetings</button>
+  <button type="button" id="no" onclick="api_led('/greetings')">Greeetings</button>
   <hr>
-  <button type="button" id="no" onclick="api_led('temperature/external')">Room temperature</button>
+  <button type="button" id="no" onclick="api_led('/temperature/external')">Room temperature</button>
   <hr>
-  <button type="button" id="no" onclick="api_led('temperature/internal')">Pi's temperature</button>
+  <button type="button" id="no" onclick="api_led('/temperature/internal')">Pi's temperature</button>
 </body>

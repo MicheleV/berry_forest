@@ -16,7 +16,6 @@ import sys
 
 from temperature import get_external_temp
 from temperature import get_pi_temperature
-from utils import get_iface_ip
 from utils import enable_cors
 
 app = bottle.app()
@@ -24,8 +23,7 @@ app = bottle.app()
 
 @route('/')
 def home():
-    print(get_iface_ip())
-    return template('templates/index.tpl', local_ip='192.168.11.11')
+    return template('templates/index.tpl')
 
 
 # NOTE: this is a POC and all the operation below are syncronous!!!

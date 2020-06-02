@@ -15,8 +15,29 @@ About the project
 This is a proof of concept on how to control a Raspberry pi from the browser.
 Most of the pin numbers are hardcoded, adjust to match your setup.
 The templates files are horribly hardcoded as well, especially the js part.
-Let's say I'm just dumping this into git, before I forget how I've done it :)
 
+
+Build the container image
+=================
+::
+ docker build -t berry_forest .
+::
+
+Build the container image
+=================
+::
+docker container run -p 8080:8080 -d --privileged -d berry_forest
+::
+
+// TODO try this instead
+::
+docker container run --device /dev/gpiomem -d berry_forest 
+::
+
+
+::
+docker update --restart=always 0576df221c0b
+::
 
 Legal disclaimer
 =================
